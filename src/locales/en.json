@@ -1,0 +1,11 @@
+{
+    "headerLabel": "Maze TV Header",
+    "footerLabel": "This site is maintained by {'@'}MazeTv, all rights reserved",
+    "navigationsHeaders": {
+        "dashboard": "Dashboard",
+        "history": "History"
+    },
+    "historyPage": {
+        "header": "Maze TV History Page"
+    }
+}

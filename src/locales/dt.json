@@ -1,0 +1,8 @@
+{
+    "headerLabel": "Maze TV Koptekst",
+    "footerLabel": "Deze site wordt beheerd door {'@'}MazeTv, alle rechten voorbehouden",
+    "navigationsHeaders": {
+        "dashboard": "Dashboard",
+        "history": "Geschiedenis"
+    }
+}
