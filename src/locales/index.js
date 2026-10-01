@@ -3,7 +3,7 @@ import en from "./en.json";
 import dt from "./dt.json";
 export const i18n = createI18n({
     legacy: false,
-    locale: "dt",
+    locale: "en",
     messages: {
         en: en,
         dt: dt
