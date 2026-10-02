@@ -17,6 +17,16 @@ async function getShowList() {
 </script>
 
 <template>
-    <ShowCard v-for="show in shows" :key="show.id" :show="show" />
+    <div class="list-container">
+        <ShowCard v-for="show in shows" :key="show.id" :show="show" />
+    </div>
 </template>
-<style scoped></style>
+<style scoped>
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem;
+    background-color: #f1f7f4;
+}
+</style>
