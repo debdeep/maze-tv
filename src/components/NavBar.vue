@@ -9,9 +9,12 @@
 </template>
 <style scoped>
 .nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     background-color: lightgray;
     color: black;
-    text-align: right;
     position: sticky;
     top: 0;
     gap: .5rem;
