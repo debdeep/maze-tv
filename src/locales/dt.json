@@ -1,12 +1,12 @@
 {
     "headerLabel": "Maze TV",
     "footerLabel": "Deze site wordt onderhouden door {'@'}MazeTv, alle rechten voorbehouden",
-    "navigationsHeaders": {
+    "navigationHeaders": {
         "dashboard": "Dashboard",
         "history": "Geschiedenis"
     },
     "historyPage": {
-        "header": "Maze TV Geschiedenispagina"
+        "header": "Bezochte pagina's"
     },
     "searchBar": {
         "placeholderText": "Zoeken op naam..."

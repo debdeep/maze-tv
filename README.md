@@ -1,12 +1,12 @@
 # Maze TV
 
-Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It includes show search, a rating-based filter, and dashboard and history routes.
+Maze TV is a client-side Vue based Web Application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It lists a dashboard of shows and includes a show search, a rating-based filter, and history of vistited routes.
 
 ## Architecture
 
-- **Vue 3 and Composition API:** Vue single-file components keep the interface divided into focused pieces, while the Composition API manages reactive search, filtering, and show-list state.
-- **Vite:** Vite provides the Vue development server and production bundler. Its Vue plugin handles `.vue` files, and the `@` alias points to `src/`.
-- **Vue Router:** Client-side routes separate the dashboard and history views. Views are loaded lazily to avoid loading every page up front.
+- **Vue 3 and Composition API:** Vue SFC's keep the interface divided into focused pieces using SOLID principles wherever needed, while the Composition API manages reactive search, filtering, and show-list state and other Vue Eco system functionalities.
+- **Vite:** Vite as a build tool provides the a robust HMR based Vue development server and production bundler. Its Vue plugin handles `.vue` files, and the `@` alias points to `src/`.
+- **Vue Router:** Client-side routes separate the dashboard and history views. Views are loaded lazily to avoid loading every page up front keeping the bundle sizes smaller.
 - **Vue I18n:** UI strings live in locale JSON files rather than being embedded in components. English (`en`) is the default locale; `dt` contains the Dutch translations.
 - **TVmaze as the data source:** The browser fetches the show list directly from TVmaze. This keeps the project backend-free; using the app requires an internet connection and access to the TVmaze API.
 - **Vitest and Vue Test Utils:** Unit tests run in jsdom, so Vue components can be tested without a browser. The current test is a starter mount test; add feature-specific tests as the app grows.
@@ -64,6 +64,6 @@ npm run preview
 - `src/components/` contains reusable interface components such as the header, search bar, show cards, and filters.
 - `src/views/` contains route-level pages.
 - `src/router/` defines client-side routes.
-- `src/locales/` contains translation catalogs and Vue I18n setup.
+- `src/locales/` contains language translations and Vue I18n setup.
 - `src/utils/` contains API and application configuration constants.
 - `src/__tests__/` contains Vitest unit tests.

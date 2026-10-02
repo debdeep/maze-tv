@@ -3,8 +3,8 @@
 
 <template>
     <nav class="nav-container">
-        <RouterLink to="/dashboard">{{ $t("navigationsHeaders.dashboard") }} | </RouterLink>
-        <RouterLink to="/history">{{ $t("navigationsHeaders.history") }}</RouterLink>
+        <RouterLink to="/shows">{{ $t("navigationHeaders.dashboard") }} | </RouterLink>
+        <RouterLink to="/history">{{ $t("navigationHeaders.history") }}</RouterLink>
     </nav>
 </template>
 <style scoped>

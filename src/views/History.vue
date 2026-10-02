@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    <h1>History Route</h1>
+    <h1>{{ $t('historyPage.header') }}</h1>
 </template>

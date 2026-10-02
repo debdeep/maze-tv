@@ -14,7 +14,7 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
 </script>
 
 <template>
-    <article class="show-card">
+    <RouterLink class="show-card" :to="{ name: 'show-detail', params: { id: show.id } }">
         <div class="show-card__main">
             <img v-if="show.image?.medium" v-once class="show-card__poster" :src="show.image.medium"
                 :alt="`${show.name} poster`" loading="lazy">
@@ -43,10 +43,11 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
             </div>
         </div>
         <div v-if="show.summary" class="show-card__summary" v-html="show.summary"></div>
-    </article>
+    </RouterLink>
 </template>
 <style scoped>
 .show-card {
+    display: block;
     box-sizing: border-box;
     min-width: 0;
     flex: 1 1 280px;
@@ -55,7 +56,20 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
     border: 1px solid #d9e6df;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgb(35 70 52 / 6%);
+    color: inherit;
     overflow-wrap: anywhere;
+    text-decoration: none;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.show-card:hover {
+    box-shadow: 0 5px 14px rgb(35 70 52 / 12%);
+    transform: translateY(-2px);
+}
+
+.show-card:focus-visible {
+    outline: 3px solid #287d68;
+    outline-offset: 3px;
 }
 
 .show-card__main {
@@ -127,6 +141,7 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
     color: #35443b;
     font-size: 0.9rem;
     line-height: 1.5;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
 }
