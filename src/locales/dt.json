@@ -7,5 +7,8 @@
     },
     "historyPage": {
         "header": "Maze TV Geschiedenispagina"
+    },
+    "searchBar": {
+        "placeholderText": "Zoeken op naam..."
     }
 }

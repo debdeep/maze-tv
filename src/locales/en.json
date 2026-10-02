@@ -7,5 +7,8 @@
     },
     "historyPage": {
         "header": "Maze TV History Page"
+    },
+    "searchBar": {
+        "placeholderText": "Search By Name..."
     }
 }
