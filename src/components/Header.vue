@@ -10,7 +10,7 @@ import NavBar from './NavBar.vue';
 </template>
 <style scoped>
 .header-container {
-    background-color: #5ba395;
+    background-color: #174a43;
     color: #ffffff;
     padding: 1rem;
     text-align: center;

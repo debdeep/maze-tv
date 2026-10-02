@@ -130,7 +130,7 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
 }
 
 .show-card__rating {
-    color: #e7a92e;
+    color: #805c16;
     font-weight: 700;
 }
 

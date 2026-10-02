@@ -29,6 +29,11 @@
     color: #c8f1da;
 }
 
+.nav-container a.router-link-active {
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.25em;
+}
+
 .nav-container a:focus-visible {
     outline: 2px solid #ffe08a;
     outline-offset: 3px;

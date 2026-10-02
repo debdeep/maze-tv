@@ -58,7 +58,7 @@ defineEmits(['toggle']);
 .slider {
     position: absolute;
     inset: 0;
-    background-color: #ccc;
+    background-color: #52635b;
     border-radius: 34px;
     transition: background-color 0.3s ease;
 }
@@ -76,7 +76,7 @@ defineEmits(['toggle']);
 }
 
 .switch-control input:checked+.slider {
-    background-color: #4caf50;
+    background-color: #287d68;
 }
 
 .switch-control input:checked+.slider::before {

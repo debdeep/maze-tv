@@ -9,7 +9,7 @@
 
 <style scoped>
 .footer-container {
-    background-color: #5ba395;
+    background-color: #263a36;
     color: #ffffff;
     padding: 1rem;
     text-align: center;
