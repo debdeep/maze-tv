@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { AppConfig } from '../utils/config.js';
 
 const searchQuery = ref('');
-const emit = defineEmits(['search']);
+const emit = defineEmits(['search']); // <-- define emit
 
 onMounted(() => {
     const searchInput = document.getElementById('search-input');

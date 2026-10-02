@@ -10,5 +10,8 @@
     },
     "searchBar": {
         "placeholderText": "Zoeken op naam..."
+    },
+    "topRestaurantSwitcher": {
+        "label": "Toon toprestaurants"
     }
 }

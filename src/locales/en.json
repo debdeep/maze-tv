@@ -10,5 +10,8 @@
     },
     "searchBar": {
         "placeholderText": "Search By Name..."
+    },
+    "topRestaurantSwitcher": {
+        "label": "Display Top Restaurants"
     }
 }

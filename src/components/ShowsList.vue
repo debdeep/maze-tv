@@ -4,9 +4,11 @@ import { Api } from '../utils/ApiConstants.js';
 import { AppConfig } from '../utils/config.js';
 import ShowCard from './ShowCard.vue';
 import SearchBar from './SearchBar.vue';
+import TopRestaurantsToggle from './TopRestaurantsToggle.vue';
 
 const shows = ref([]);
 const searchQuery = ref('');
+const showTopRestaurants = ref(false);
 
 onMounted(async () => {
     await getShowList();
@@ -18,19 +20,41 @@ async function getShowList() {
     shows.value = data;
 }
 const filteredShows = computed(() => {
-    if (!searchQuery.value || searchQuery.value.length <= AppConfig.searchMinLength) {
-        return shows.value;
+    // filter by toggle switcher
+    if (showTopRestaurants.value) {
+        searchQuery.value = "";
+        return shows.value.filter(
+            show => show?.rating?.average >= AppConfig.restaurantRatingsBenchMark
+        );
     }
-    return shows.value.filter(show => show.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+
+    // filter by search query
+    if (searchQuery.value && searchQuery.value.length > AppConfig.searchMinLength) {
+        return shows.value.filter(show =>
+            show.name?.toLowerCase().includes(searchQuery.value.toLowerCase())
+        );
+    }
+
+    // Default show all
+    return shows.value;
 });
 const handleSearch = (query) => {
     searchQuery.value = query;
 };
+const handleToggle = (isChecked) => {
+    //console.log('Top Restaurants Toggle:', isChecked);
+    showTopRestaurants.value = isChecked;
+};
+
 </script>
 
 <template>
     <SearchBar @search="handleSearch" />
-    <div class="list-container">
+    <TopRestaurantsToggle @toggle="handleToggle" />
+    <div v-if="filteredShows.length === 0" class="no-results">
+        <p>No shows found.</p>
+    </div>
+    <div v-else class="list-container">
         <ShowCard v-for="show in filteredShows" :key="show.id" :show="show" />
     </div>
 </template>
