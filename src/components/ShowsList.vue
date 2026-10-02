@@ -20,7 +20,7 @@ async function getShowList() {
     shows.value = data;
 }
 const filteredShows = computed(() => {
-    // filter by toggle switcher
+    // filter when switcher is enabled
     if (showTopRestaurants.value) {
         searchQuery.value = "";
         return shows.value.filter(
