@@ -28,6 +28,14 @@ defineEmits(['toggle']);
     cursor: pointer;
 }
 
+@media (max-width: 600px) {
+    .toggle-container {
+        justify-content: center;
+        padding: 0 1rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
 .switch-control {
     position: relative;
     display: inline-block;

@@ -66,4 +66,15 @@ const handleToggle = (isChecked) => {
     padding: 1.25rem;
     background-color: #f1f7f4;
 }
+
+@media (max-width: 600px) {
+    .list-container {
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .list-container :deep(.show-card) {
+        flex-basis: 100%;
+    }
+}
 </style>

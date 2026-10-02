@@ -12,7 +12,24 @@ import NavBar from './NavBar.vue';
 .header-container {
     background-color: #5ba395;
     color: #ffffff;
-    padding: .5rem;
+    padding: 1rem;
     text-align: center;
+}
+
+.header-container h1 {
+    margin: 0 0 0.75rem;
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+    .header-container {
+        padding: 0.875rem 1rem;
+    }
+
+    .header-container h1 {
+        margin-bottom: 0.625rem;
+        font-size: 1.5rem;
+    }
 }
 </style>

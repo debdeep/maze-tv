@@ -18,12 +18,18 @@ import Footer from './components/Footer.vue';
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
 }
 
 .container-body {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 1rem;
   background-color: #f1f7f4;
+}
+
+:global(body) {
+  margin: 0;
 }
 </style>
