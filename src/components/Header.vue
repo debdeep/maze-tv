@@ -10,8 +10,8 @@ import NavBar from './NavBar.vue';
 </template>
 <style scoped>
 .header-container {
-    background-color: lightgray;
-    color: black;
+    background-color: #5ba395;
+    color: #ffffff;
     padding: .5rem;
     text-align: center;
 }
