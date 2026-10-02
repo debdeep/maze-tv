@@ -4,11 +4,26 @@ import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <Header />
-  <main>
-    <RouterView />
-  </main>
-  <Footer />
+  <div class="container">
+    <Header />
+    <main class="container-body">
+      <RouterView />
+    </main>
+    <Footer />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #f1f7f4;
+}
+</style>
