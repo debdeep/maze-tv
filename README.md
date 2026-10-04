@@ -11,6 +11,12 @@ Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze 
 - **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
 - **Vitest and Vue Test Utils:** Unit tests run in jsdom. The existing test is a starter app-mount test; feature behavior should receive focused tests as it is developed.
 
+## Language Switching
+
+The header language selector changes Vue I18n's global locale, so translated interface text updates immediately. English uses the `en` catalog and Dutch uses the project's `dt` catalog key. The selector label is translated in both catalogs, while the option names are shown as `English` and `Dutch`.
+
+The catalog key `dt` is not a standard language tag. When Dutch is selected, the header sets the document's HTML `lang` attribute to `nl`; English sets it to `en`. The selected language is currently kept in memory and returns to English after a page reload.
+
 ## Routes and History
 
 - `/` redirects to `/shows`.
@@ -67,54 +73,6 @@ npm run test:unit -- --run
 ```
 
 Create a production build:
-
-```sh
-npm run build
-```
-
-Preview the production build locally:
-
-```sh
-npm run preview
-```
-
-## Requirements
-
-- **Node.js:** `^22.18.0 || >=24.12.0`, as declared in `package.json`. This means Node.js 22.18.x or later in the 22.x line, or 24.12.0 and later. Node.js 23.x and Node.js 24 versions earlier than 24.12.0 are outside the declared range.
-- **npm:** The repository does not pin an npm version. Use npm 9 or newer, which supports the version 3 lockfile in `package-lock.json`. npm is normally installed with Node.js.
-
-Check your local versions with:
-
-```sh
-node --version
-npm --version
-```
-
-## Setup and Run
-
-From the project root, install the exact dependency versions recorded in the lockfile:
-
-```sh
-npm ci
-```
-
-### Start the development server with hot reload:
-
-```sh
-npm run dev
-```
-
-Vite prints the local URL in the terminal (normally `http://localhost:5173`).
-
-## Tests and Production Build
-
-Run the unit tests once:
-
-```sh
-npm run test:unit -- --run
-```
-
-Run the production build:
 
 ```sh
 npm run build
