@@ -1,15 +1,82 @@
 # Maze TV
 
-Maze TV is a client-side Vue based Web Application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It lists a dashboard of shows and includes a show search, a rating-based filter, and history of vistited routes.
+Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It provides paginated show listings, search, a rating filter, show details, and an in-session route history.
 
-## Architecture
+## Architecture Decisions
 
-- **Vue 3 and Composition API:** Vue SFC's keep the interface divided into focused pieces using SOLID principles wherever needed, while the Composition API manages reactive search, filtering, and show-list state and other Vue Eco system functionalities.
-- **Vite:** Vite as a build tool provides the a robust HMR based Vue development server and production bundler. Its Vue plugin handles `.vue` files, and the `@` alias points to `src/`.
-- **Vue Router:** Client-side routes separate the dashboard and history views. Views are loaded lazily to avoid loading every page up front keeping the bundle sizes smaller.
-- **Vue I18n:** UI strings live in locale JSON files rather than being embedded in components. English (`en`) is the default locale; `dt` contains the Dutch translations.
-- **TVmaze as the data source:** The browser fetches the show list directly from TVmaze. This keeps the project backend-free; using the app requires an internet connection and access to the TVmaze API.
-- **Vitest and Vue Test Utils:** Unit tests run in jsdom, so Vue components can be tested without a browser. The current test is a starter mount test; add feature-specific tests as the app grows.
+- **Vue 3 and the Composition API:** Single-file components keep the interface split by responsibility. Vue reactivity manages show data, search, filters, pagination, and route history.
+- **Vite:** Vite provides the Vue-aware development server with hot-module replacement and bundles the production app. The `@` alias resolves to `src/`.
+- **Vue Router:** Client-side routes separate list, detail, and history views. Route components are lazy-loaded so each view can be loaded when needed.
+- **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
+- **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
+- **Vitest and Vue Test Utils:** Unit tests run in jsdom. The existing test is a starter app-mount test; feature behavior should receive focused tests as it is developed.
+
+## Routes and History
+
+- `/` redirects to `/shows`.
+- `/shows` displays the dashboard and show list.
+- `/shows/:id` loads details for the TVmaze show with that ID.
+- `/history` lists unique routes visited during the current app session. The history page itself is not added to the list; entries are held in memory and reset when the app reloads.
+
+Show cards use router links to open the corresponding dynamic detail route. The detail page fetches the record by ID and presents available metadata, including the poster, genres, rating, runtime, schedule, and synopsis.
+
+## Show Data and Pagination
+
+The first show request uses TVmaze's zero-based endpoint, `https://api.tvmaze.com/shows?page=0`. The separate `Pagination.vue` component presents Previous and Next controls; `ShowsList.vue` owns the current page and requests the selected page. The displayed page number is one-based for readers, while requests remain zero-based. Previous is disabled on page zero. Next remains available for non-empty pages and is disabled when the API indicates there are no further results.
+
+Search and the rating filter run against the shows currently loaded from the API. Changing pages requests a new set of shows and returns focus to the search field after a successful load.
+
+## Responsive and Accessible UI
+
+The show list uses a wrapping Flexbox layout, with one full-width card per row on narrow screens. Search and pagination controls provide touch-sized targets, and interactive elements include visible keyboard focus styles. Header, footer, and card text use high-contrast colors.
+
+## Requirements
+
+- **Node.js:** `^22.18.0 || >=24.12.0`, as declared in `package.json`. This allows Node.js 22.18.x or newer in the 22.x line, or Node.js 24.12.0 and later.
+- **npm:** The repository does not pin an npm version. Use npm 9 or newer, which supports the version 3 lockfile in `package-lock.json`. npm is normally installed with Node.js.
+
+Check your local versions with:
+
+```sh
+node --version
+npm --version
+```
+
+## Setup and Run
+
+From the project root, install dependencies recorded in the lockfile:
+
+```sh
+npm ci
+```
+
+Start the development server with hot reload:
+
+```sh
+npm run dev
+```
+
+Vite prints the local URL in the terminal (normally `http://localhost:5173`).
+
+## Tests and Production Build
+
+Run unit tests once:
+
+```sh
+npm run test:unit -- --run
+```
+
+Create a production build:
+
+```sh
+npm run build
+```
+
+Preview the production build locally:
+
+```sh
+npm run preview
+```
 
 ## Requirements
 
@@ -61,9 +128,9 @@ npm run preview
 
 ## Project Layout
 
-- `src/components/` contains reusable interface components such as the header, search bar, show cards, and filters.
-- `src/views/` contains route-level pages.
-- `src/router/` defines client-side routes.
-- `src/locales/` contains language translations and Vue I18n setup.
+- `src/components/` contains reusable interface components, including show cards, search, filters, pagination, and route history.
+- `src/views/` contains the dashboard, history, and dynamic show-detail pages.
+- `src/router/` defines client-side routes and in-session route tracking.
+- `src/locales/` contains translation catalogs and Vue I18n setup.
 - `src/utils/` contains API and application configuration constants.
 - `src/__tests__/` contains Vitest unit tests.
