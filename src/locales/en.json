@@ -14,5 +14,11 @@
     },
     "topRestaurantSwitcher": {
         "label": "Display Top Restaurants"
+    },
+    "pagination": {
+        "navigationLabel": "Show list pagination",
+        "previous": "Previous",
+        "page": "Page {page}",
+        "next": "Next"
     }
 }

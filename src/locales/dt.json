@@ -13,5 +13,11 @@
     },
     "topRestaurantSwitcher": {
         "label": "Toon toprestaurants"
+    },
+    "pagination": {
+        "navigationLabel": "Paginering van shows",
+        "previous": "Vorige",
+        "page": "Pagina {page}",
+        "next": "Volgende"
     }
 }

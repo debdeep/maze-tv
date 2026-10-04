@@ -1,4 +1,4 @@
 export const Api = {
-    showList: "https://api.tvmaze.com/shows?",
+    showList: (page = 0) => `https://api.tvmaze.com/shows?page=${page}`,
     showById: (id) => `https://api.tvmaze.com/shows/${encodeURIComponent(id)}`
 }
