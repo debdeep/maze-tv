@@ -1,10 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import { reactive } from 'vue';
 
+const visitedRoutes = reactive([]);
 const routes = [{
+  path: '/',
+  redirect: { name: 'shows' },
+}, {
   path: '/shows',
   name: "shows",
-  component: () => import('@/views/Dashboard.vue'),
-  alias: ["/", "/home"]
+  component: () => import('@/views/Dashboard.vue')
 }, {
   path: '/history',
   name: "history",
@@ -19,4 +23,14 @@ const router = createRouter({
   routes: routes
 })
 
-export default router
+router.afterEach((to, from, faliure) => {
+  if (to.path !== "/history") {
+    if (!visitedRoutes.some(route => route.path === to.path)) {
+      visitedRoutes.push({ path: to.path });
+      //console.log("visitedRoutes", visitedRoutes);
+    }
+  }
+})
+
+export { visitedRoutes };
+export default router;

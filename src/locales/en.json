@@ -6,7 +6,8 @@
         "history": "History"
     },
     "historyPage": {
-        "header": "Visited Pages"
+        "header": "Visited Pages",
+        "noVisitedRoutes": "No visited site links"
     },
     "searchBar": {
         "placeholderText": "Search By Name..."

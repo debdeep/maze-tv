@@ -31,7 +31,7 @@ watch(() => route.params.id, loadShow, { immediate: true });
 
 <template>
     <section class="show-detail" aria-labelledby="show-title">
-        <RouterLink class="show-detail__back" to="/">Back to shows</RouterLink>
+        <RouterLink class="show-detail__back" to="/shows">Back to shows</RouterLink>
 
         <p v-if="loading" class="show-detail__message" role="status">Loading show...</p>
         <div v-else-if="error" class="show-detail__message" role="alert">
