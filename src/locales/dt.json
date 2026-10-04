@@ -1,5 +1,8 @@
 {
     "headerLabel": "Maze TV",
+    "languageSwitcher": {
+        "label": "Taal"
+    },
     "footerLabel": "Deze site wordt onderhouden door {'@'}MazeTv, alle rechten voorbehouden",
     "navigationHeaders": {
         "dashboard": "Dashboard",
