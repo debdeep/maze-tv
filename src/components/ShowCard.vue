@@ -18,7 +18,9 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
         <div class="show-card__main">
             <img v-if="show.image?.medium" v-once class="show-card__poster" :src="show.image.medium"
                 :alt="`${show.name} poster`" loading="lazy">
-            <div v-else class="show-card__poster-fallback" aria-hidden="true">No image</div>
+            <div v-else class="show-card__poster-fallback" aria-hidden="true">
+                {{ $t('showDetail.noImage') }}
+            </div>
 
             <div class="show-card__details">
                 <div class="show-card__status" v-memo="[show.status, show.language]">

@@ -75,7 +75,8 @@ watch(() => route.params.id, loadShow, { immediate: true });
                         </div>
                         <div v-if="show.averageRuntime || show.runtime">
                             <dt>{{ $t('showDetail.runtime') }}</dt>
-                            <dd>{{ $t('showDetail.runtimeValue', { minutes: show.averageRuntime || show.runtime }) }}</dd>
+                            <dd>{{ $t('showDetail.runtimeValue', { minutes: show.averageRuntime || show.runtime }) }}
+                            </dd>
                         </div>
                         <div v-if="show.premiered">
                             <dt>{{ $t('showDetail.premiered') }}</dt>

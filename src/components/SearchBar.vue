@@ -26,7 +26,7 @@ const onInput = () => {
     emit('search', searchQuery.value);
 };
 
-const debouncedOnInput = debouncedSearch(onInput, AppConfig.searchDebounceDelay);
+const debouncedOnInput = debouncedSearch(onInput, AppConfig.searchDelay);
 </script>
 
 <template>

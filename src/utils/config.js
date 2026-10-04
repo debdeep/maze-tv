@@ -1,5 +1,5 @@
 export const AppConfig = {
-    searchDelay: 3000,
+    searchDelay: 300,
     searchMinLength: 2,
     restaurantRatingsBenchMark: 8
 }
