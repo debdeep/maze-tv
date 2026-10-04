@@ -58,7 +58,7 @@ const filteredShows = computed(() => {
     // filter when switcher is enabled
     if (showTopRestaurants.value) {
         return shows.value.filter(
-            show => show?.rating?.average >= AppConfig.restaurantRatingsBenchMark
+            show => show?.rating?.average >= AppConfig.showRatingsBenchMark
         );
     }
 

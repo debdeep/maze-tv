@@ -32,9 +32,29 @@ The first show request uses TVmaze's zero-based endpoint, `https://api.tvmaze.co
 
 Search and the rating filter run against the shows currently loaded from the API. Changing pages requests a new set of shows and returns focus to the search field after a successful load.
 
+## Application Configuration
+
+`src/utils/config.js` centralizes the dashboard's search and rating settings:
+
+```js
+export const AppConfig = {
+	searchDelay: 300,
+	searchMinLength: 2,
+	showRatingsBenchMark: 8
+}
+```
+
+- `searchDelay` is the debounce interval in milliseconds before the search emits a query.
+- `searchMinLength` requires the query to be longer than two characters before filtering.
+- `showRatingsBenchMark` is the minimum average rating used by the top-rated shows filter.
+
 ## Genre Groups and Ratings
 
-`groupShowsByGenre` places each show into every genre listed by TVmaze. Shows without genres appear in a translated “Other” group. Genre groups are displayed as horizontally scrollable rails, and shows inside each rail are sorted by rating from highest to lowest; ties are sorted by name, with unrated shows last. Grouping and sorting apply to the currently loaded API page after search and rating filters.
+`groupShowsByGenre(shows)` groups each show under its TVmaze genres, uses “Other” when no genre is available, and sorts each group by rating (then name). It runs on the filtered shows from the current API page.
+
+## API Constants
+
+`src/utils/ApiConstants.js` centralizes the TVmaze URLs. `Api.showList(page)` builds the zero-based paginated show-list URL, and `Api.showById(id)` builds a detail URL with the show ID URL-encoded.
 
 ## Responsive and Accessible UI
 
