@@ -6,11 +6,11 @@ import { Api } from '../utils/ApiConstants.js';
 const route = useRoute();
 const show = ref(null);
 const loading = ref(true);
-const error = ref('');
+const error = ref(false);
 
 async function loadShow(id) {
     show.value = null;
-    error.value = '';
+    error.value = false;
     loading.value = true;
 
     try {
@@ -20,7 +20,7 @@ async function loadShow(id) {
         }
         show.value = await response.json();
     } catch {
-        error.value = 'Unable to load this show. Check your connection and try again.';
+        error.value = true;
     } finally {
         loading.value = false;
     }
@@ -31,12 +31,18 @@ watch(() => route.params.id, loadShow, { immediate: true });
 
 <template>
     <section class="show-detail" aria-labelledby="show-title">
-        <RouterLink class="show-detail__back" to="/shows">Back to shows</RouterLink>
+        <RouterLink class="show-detail__back" to="/shows">
+            {{ $t('showDetail.backToShows') }}
+        </RouterLink>
 
-        <p v-if="loading" class="show-detail__message" role="status">Loading show...</p>
+        <p v-if="loading" class="show-detail__message" role="status">
+            {{ $t('showDetail.loading') }}
+        </p>
         <div v-else-if="error" class="show-detail__message" role="alert">
-            <p>{{ error }}</p>
-            <button type="button" @click="loadShow(route.params.id)">Retry</button>
+            <p>{{ $t('showDetail.loadError') }}</p>
+            <button type="button" @click="loadShow(route.params.id)">
+                {{ $t('showDetail.retry') }}
+            </button>
         </div>
 
         <article v-else-if="show" class="show-detail__content">
@@ -51,8 +57,11 @@ watch(() => route.params.id, loadShow, { immediate: true });
 
             <div class="show-detail__layout">
                 <img v-if="show.image?.original || show.image?.medium" class="show-detail__poster"
-                    :src="show.image.original || show.image.medium" :alt="`${show.name} poster`">
-                <div v-else class="show-detail__poster-fallback">No image available</div>
+                    :src="show.image.original || show.image.medium"
+                    :alt="$t('showDetail.posterAlt', { name: show.name })">
+                <div v-else class="show-detail__poster-fallback">
+                    {{ $t('showDetail.noImage') }}
+                </div>
 
                 <div class="show-detail__information">
                     <p v-if="show.genres?.length" class="show-detail__genres">
@@ -61,43 +70,52 @@ watch(() => route.params.id, loadShow, { immediate: true });
 
                     <dl class="show-detail__facts">
                         <div v-if="show.rating?.average">
-                            <dt>Rating</dt>
+                            <dt>{{ $t('showDetail.rating') }}</dt>
                             <dd><span aria-hidden="true">★</span> {{ show.rating.average }}</dd>
                         </div>
                         <div v-if="show.averageRuntime || show.runtime">
-                            <dt>Runtime</dt>
-                            <dd>{{ show.averageRuntime || show.runtime }} min</dd>
+                            <dt>{{ $t('showDetail.runtime') }}</dt>
+                            <dd>{{ $t('showDetail.runtimeValue', { minutes: show.averageRuntime || show.runtime }) }}</dd>
                         </div>
                         <div v-if="show.premiered">
-                            <dt>Premiered</dt>
+                            <dt>{{ $t('showDetail.premiered') }}</dt>
                             <dd>{{ show.premiered }}</dd>
                         </div>
                         <div v-if="show.ended">
-                            <dt>Ended</dt>
+                            <dt>{{ $t('showDetail.ended') }}</dt>
                             <dd>{{ show.ended }}</dd>
                         </div>
                         <div v-if="show.schedule?.days?.length || show.schedule?.time">
-                            <dt>Schedule</dt>
+                            <dt>{{ $t('showDetail.schedule') }}</dt>
                             <dd>
-                                {{ show.schedule.days?.join(' · ') }}
-                                <span v-if="show.schedule.time"> at {{ show.schedule.time }}</span>
+                                <span v-if="show.schedule.days?.length && show.schedule.time">
+                                    {{ $t('showDetail.scheduleDaysTime', {
+                                        days: show.schedule.days.join(' · '), time: show.schedule.time
+                                    }) }}
+                                </span>
+                                <span v-else-if="show.schedule.days?.length">
+                                    {{ $t('showDetail.scheduleDays', { days: show.schedule.days.join(' · ') }) }}
+                                </span>
+                                <span v-else>
+                                    {{ $t('showDetail.scheduleTime', { time: show.schedule.time }) }}
+                                </span>
                             </dd>
                         </div>
                         <div v-if="show.network?.name || show.webChannel?.name">
-                            <dt>Network</dt>
+                            <dt>{{ $t('showDetail.network') }}</dt>
                             <dd>{{ show.network?.name || show.webChannel?.name }}</dd>
                         </div>
                     </dl>
 
                     <a v-if="show.officialSite" class="show-detail__official-site" :href="show.officialSite"
                         target="_blank" rel="noopener noreferrer">
-                        Visit official site
+                        {{ $t('showDetail.officialSite') }}
                     </a>
                 </div>
             </div>
 
             <section v-if="show.summary" class="show-detail__summary">
-                <h2>About</h2>
+                <h2>{{ $t('showDetail.about') }}</h2>
                 <div v-html="show.summary"></div>
             </section>
         </article>

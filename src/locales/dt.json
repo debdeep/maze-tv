@@ -29,5 +29,25 @@
         "loadError": "Kan series niet laden. Controleer je verbinding en probeer het opnieuw.",
         "retry": "Opnieuw proberen",
         "noResults": "Geen series gevonden."
+    },
+    "showDetail": {
+        "backToShows": "Terug naar series",
+        "loading": "Serie laden...",
+        "loadError": "Kan deze serie niet laden. Controleer je verbinding en probeer het opnieuw.",
+        "retry": "Opnieuw proberen",
+        "posterAlt": "Poster van {name}",
+        "noImage": "Geen afbeelding beschikbaar",
+        "rating": "Beoordeling",
+        "runtime": "Speelduur",
+        "runtimeValue": "{minutes} min",
+        "premiered": "Premièredatum",
+        "ended": "Einddatum",
+        "schedule": "Uitzendschema",
+        "scheduleDaysTime": "{days} om {time}",
+        "scheduleDays": "{days}",
+        "scheduleTime": "{time}",
+        "network": "Omroep",
+        "officialSite": "Bezoek officiële website",
+        "about": "Over deze serie"
     }
 }

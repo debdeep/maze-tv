@@ -30,5 +30,25 @@
         "loadError": "Unable to load shows. Check your connection and try again.",
         "retry": "Retry",
         "noResults": "No shows found."
+    },
+    "showDetail": {
+        "backToShows": "Back to shows",
+        "loading": "Loading show...",
+        "loadError": "Unable to load this show. Check your connection and try again.",
+        "retry": "Retry",
+        "posterAlt": "{name} poster",
+        "noImage": "No image available",
+        "rating": "Rating",
+        "runtime": "Runtime",
+        "runtimeValue": "{minutes} min",
+        "premiered": "Premiered",
+        "ended": "Ended",
+        "schedule": "Schedule",
+        "scheduleDaysTime": "{days} at {time}",
+        "scheduleDays": "{days}",
+        "scheduleTime": "{time}",
+        "network": "Network",
+        "officialSite": "Visit official site",
+        "about": "About"
     }
 }
