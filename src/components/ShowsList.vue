@@ -13,7 +13,8 @@ const showTopRestaurants = ref(false);
 const page = ref(0);
 const hasNextPage = ref(true);
 const loading = ref(false);
-const loadError = ref('');
+const loadingPage = ref(null);
+const loadError = ref(false);
 const searchBar = ref(null);
 
 onMounted(async () => {
@@ -25,7 +26,8 @@ async function getShowList(targetPage = page.value) {
 
     const shouldFocusSearch = targetPage !== page.value;
     loading.value = true;
-    loadError.value = '';
+    loadingPage.value = targetPage;
+    loadError.value = false;
 
     try {
         const response = await fetch(Api.showList(targetPage));
@@ -45,9 +47,10 @@ async function getShowList(targetPage = page.value) {
             searchBar.value?.focus();
         }
     } catch {
-        loadError.value = 'Unable to load shows. Check your connection and try again.';
+        loadError.value = true;
     } finally {
         loading.value = false;
+        loadingPage.value = null;
     }
 }
 const filteredShows = computed(() => {
@@ -73,7 +76,6 @@ const handleSearch = (query) => {
     searchQuery.value = query;
 };
 const handleToggle = (isChecked) => {
-    //console.log('Top Restaurants Toggle:', isChecked);
     showTopRestaurants.value = isChecked;
 };
 
@@ -83,20 +85,20 @@ const handleToggle = (isChecked) => {
     <SearchBar ref="searchBar" @search="handleSearch" />
     <TopRestaurantsToggle @toggle="handleToggle" />
     <p v-if="loading && shows.length === 0" class="list-message" role="status">
-        Loading shows...
+        {{ $t('showsList.loading') }}
     </p>
     <p v-if="loadError" class="list-message" role="alert">
-        {{ loadError }}
-        <button type="button" @click="getShowList(page)">Retry</button>
+        {{ $t('showsList.loadError') }}
+        <button type="button" @click="getShowList(page)">{{ $t('showsList.retry') }}</button>
     </p>
     <p v-if="loading && shows.length > 0" class="list-message" role="status">
-        Loading page {{ page + 2 }}...
+        {{ $t('showsList.loadingPage', { page: loadingPage + 1 }) }}
     </p>
     <div v-if="filteredShows.length > 0" class="list-container">
         <ShowCard v-for="show in filteredShows" :key="show.id" :show="show" />
     </div>
     <p v-else-if="!loading && !loadError" class="no-results">
-        No shows found.
+        {{ $t('showsList.noResults') }}
     </p>
     <Pagination v-if="shows.length > 0" :page="page" :has-next-page="hasNextPage" :loading="loading"
         @change="getShowList" />

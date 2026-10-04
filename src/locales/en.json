@@ -20,5 +20,12 @@
         "previous": "Previous",
         "page": "Page {page}",
         "next": "Next"
+    },
+    "showsList": {
+        "loading": "Loading shows...",
+        "loadingPage": "Loading page {page}...",
+        "loadError": "Unable to load shows. Check your connection and try again.",
+        "retry": "Retry",
+        "noResults": "No shows found."
     }
 }

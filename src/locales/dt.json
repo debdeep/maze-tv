@@ -19,5 +19,12 @@
         "previous": "Vorige",
         "page": "Pagina {page}",
         "next": "Volgende"
+    },
+    "showsList": {
+        "loading": "Series laden...",
+        "loadingPage": "Pagina {page} laden...",
+        "loadError": "Kan series niet laden. Controleer je verbinding en probeer het opnieuw.",
+        "retry": "Opnieuw proberen",
+        "noResults": "Geen series gevonden."
     }
 }
