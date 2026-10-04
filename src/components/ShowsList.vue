@@ -14,6 +14,7 @@ const page = ref(0);
 const hasNextPage = ref(true);
 const loading = ref(false);
 const loadError = ref('');
+const searchBar = ref(null);
 
 onMounted(async () => {
     await getShowList(0);
@@ -22,6 +23,7 @@ onMounted(async () => {
 async function getShowList(targetPage = page.value) {
     if (loading.value) return;
 
+    const shouldFocusSearch = targetPage !== page.value;
     loading.value = true;
     loadError.value = '';
 
@@ -39,6 +41,9 @@ async function getShowList(targetPage = page.value) {
         shows.value = data;
         page.value = targetPage;
         hasNextPage.value = data.length > 0;
+        if (shouldFocusSearch) {
+            searchBar.value?.focus();
+        }
     } catch {
         loadError.value = 'Unable to load shows. Check your connection and try again.';
     } finally {
@@ -75,7 +80,7 @@ const handleToggle = (isChecked) => {
 </script>
 
 <template>
-    <SearchBar @search="handleSearch" />
+    <SearchBar ref="searchBar" @search="handleSearch" />
     <TopRestaurantsToggle @toggle="handleToggle" />
     <p v-if="loading && shows.length === 0" class="list-message" role="status">
         Loading shows...

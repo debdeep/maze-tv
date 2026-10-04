@@ -3,14 +3,16 @@ import { ref, onMounted } from 'vue';
 import { AppConfig } from '../utils/config.js';
 
 const searchQuery = ref('');
-const emit = defineEmits(['search']); // <-- define emit
+const searchInput = ref(null);
+const emit = defineEmits(['search']);
 
-onMounted(() => {
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        searchInput.focus();
-    }
-});
+function focus() {
+    searchInput.value?.focus();
+}
+
+defineExpose({ focus });
+
+onMounted(focus);
 
 function debouncedSearch(func, delay) {
     let timeout;
@@ -29,8 +31,8 @@ const debouncedOnInput = debouncedSearch(onInput, AppConfig.searchDebounceDelay)
 
 <template>
     <div class="search-bar">
-        <input id="search-input" type="text" :placeholder="$t('searchBar.placeholderText')" v-model.trim="searchQuery"
-            @input="debouncedOnInput" />
+        <input ref="searchInput" id="search-input" type="text" :placeholder="$t('searchBar.placeholderText')"
+            v-model.trim="searchQuery" @input="debouncedOnInput" />
     </div>
 </template>
 <style scoped>
