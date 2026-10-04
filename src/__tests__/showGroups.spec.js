@@ -26,7 +26,7 @@ describe('groupShowsByGenre', () => {
         ]);
 
         expect(groups).toEqual([
-            { genre: null, shows: [{ id: 1, name: 'No Genre', genres: [] }] },
+            { genre: 'Other', shows: [{ id: 1, name: 'No Genre', genres: [] }] },
         ]);
     });
 });
