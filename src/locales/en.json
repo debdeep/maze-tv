@@ -29,7 +29,8 @@
         "loadingPage": "Loading page {page}...",
         "loadError": "Unable to load shows. Check your connection and try again.",
         "retry": "Retry",
-        "noResults": "No shows found."
+        "noResults": "No shows found.",
+        "otherGenre": "Other"
     },
     "showDetail": {
         "backToShows": "Back to shows",

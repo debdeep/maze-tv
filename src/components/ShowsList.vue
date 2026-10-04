@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { Api } from '../utils/ApiConstants.js';
 import { AppConfig } from '../utils/config.js';
+import { groupShowsByGenre } from '../utils/groupShowsByGenre.js';
 import ShowCard from './ShowCard.vue';
 import SearchBar from './SearchBar.vue';
 import Pagination from './Pagination.vue';
@@ -56,7 +57,6 @@ async function getShowList(targetPage = page.value) {
 const filteredShows = computed(() => {
     // filter when switcher is enabled
     if (showTopRestaurants.value) {
-        searchQuery.value = "";
         return shows.value.filter(
             show => show?.rating?.average >= AppConfig.restaurantRatingsBenchMark
         );
@@ -72,11 +72,16 @@ const filteredShows = computed(() => {
     // Default show all
     return shows.value;
 });
+const genreGroups = computed(() => groupShowsByGenre(filteredShows.value));
 const handleSearch = (query) => {
     searchQuery.value = query;
 };
 const handleToggle = (isChecked) => {
     showTopRestaurants.value = isChecked;
+    if (isChecked) {
+        searchQuery.value = '';
+        searchBar.value?.clear();
+    }
 };
 
 </script>
@@ -94,8 +99,13 @@ const handleToggle = (isChecked) => {
     <p v-if="loading && shows.length > 0" class="list-message" role="status">
         {{ $t('showsList.loadingPage', { page: loadingPage + 1 }) }}
     </p>
-    <div v-if="filteredShows.length > 0" class="list-container">
-        <ShowCard v-for="show in filteredShows" :key="show.id" :show="show" />
+    <div v-if="genreGroups.length > 0" class="genre-groups">
+        <section v-for="group in genreGroups" :key="group.genre ?? 'other'" class="genre-group">
+            <h2>{{ group.genre || $t('showsList.otherGenre') }}</h2>
+            <div class="genre-row">
+                <ShowCard v-for="show in group.shows" :key="show.id" :show="show" />
+            </div>
+        </section>
     </div>
     <p v-else-if="!loading && !loadError" class="no-results">
         {{ $t('showsList.noResults') }}
@@ -104,22 +114,35 @@ const handleToggle = (isChecked) => {
         @change="getShowList" />
 </template>
 <style scoped>
-.list-container {
+.genre-group+.genre-group {
+    margin-top: 1.5rem;
+}
+
+.genre-group h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+}
+
+.genre-row {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
-    padding: 1.25rem;
-    background-color: #f1f7f4;
+    overflow-x: auto;
+    padding: 0.25rem 0.25rem 1rem;
+    scroll-snap-type: x proximity;
+}
+
+.genre-row :deep(.show-card) {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
 }
 
 @media (max-width: 600px) {
-    .list-container {
+    .genre-row {
         gap: 0.75rem;
-        padding: 1rem;
     }
 
-    .list-container :deep(.show-card) {
-        flex-basis: 100%;
+    .genre-row :deep(.show-card) {
+        flex-basis: min(84vw, 280px);
     }
 }
 </style>

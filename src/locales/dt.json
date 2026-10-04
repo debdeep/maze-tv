@@ -28,7 +28,8 @@
         "loadingPage": "Pagina {page} laden...",
         "loadError": "Kan series niet laden. Controleer je verbinding en probeer het opnieuw.",
         "retry": "Opnieuw proberen",
-        "noResults": "Geen series gevonden."
+        "noResults": "Geen series gevonden.",
+        "otherGenre": "Overig"
     },
     "showDetail": {
         "backToShows": "Terug naar series",

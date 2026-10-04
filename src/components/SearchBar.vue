@@ -10,16 +10,24 @@ function focus() {
     searchInput.value?.focus();
 }
 
-defineExpose({ focus });
+function clear() {
+    debouncedOnInput.cancel();
+    searchQuery.value = '';
+    emit('search', '');
+}
+
+defineExpose({ focus, clear });
 
 onMounted(focus);
 
 function debouncedSearch(func, delay) {
     let timeout;
-    return function (...args) {
+    const debounced = function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), delay);
     };
+    debounced.cancel = () => clearTimeout(timeout);
+    return debounced;
 }
 
 const onInput = () => {

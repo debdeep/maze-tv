@@ -9,7 +9,7 @@ Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze 
 - **Vue Router:** Client-side routes separate list, detail, and history views. Route components are lazy-loaded so each view can be loaded when needed.
 - **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
 - **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
-- **Vitest and Vue Test Utils:** Unit tests run in jsdom. The existing test is a starter app-mount test; feature behavior should receive focused tests as it is developed.
+- **Vitest and Vue Test Utils:** Unit tests run in jsdom. Tests cover the shared app shell and the pure genre-grouping utility, including rating order and shows without genres.
 
 ## Language Switching
 
@@ -32,9 +32,13 @@ The first show request uses TVmaze's zero-based endpoint, `https://api.tvmaze.co
 
 Search and the rating filter run against the shows currently loaded from the API. Changing pages requests a new set of shows and returns focus to the search field after a successful load.
 
+## Genre Groups and Ratings
+
+`groupShowsByGenre` places each show into every genre listed by TVmaze. Shows without genres appear in a translated “Other” group. Genre groups are displayed as horizontally scrollable rails, and shows inside each rail are sorted by rating from highest to lowest; ties are sorted by name, with unrated shows last. Grouping and sorting apply to the currently loaded API page after search and rating filters.
+
 ## Responsive and Accessible UI
 
-The show list uses a wrapping Flexbox layout, with one full-width card per row on narrow screens. Search and pagination controls provide touch-sized targets, and interactive elements include visible keyboard focus styles. Header, footer, and card text use high-contrast colors.
+The show dashboard uses horizontally scrollable genre rails. Cards remain usable on narrow screens, and the rails can be swiped horizontally. Search and pagination controls provide touch-sized targets, and interactive elements include visible keyboard focus styles. Header, footer, and card text use high-contrast colors.
 
 ## Requirements
 
@@ -90,5 +94,5 @@ npm run preview
 - `src/views/` contains the dashboard, history, and dynamic show-detail pages.
 - `src/router/` defines client-side routes and in-session route tracking.
 - `src/locales/` contains translation catalogs and Vue I18n setup.
-- `src/utils/` contains API and application configuration constants.
-- `src/__tests__/` contains Vitest unit tests.
+- `src/utils/` contains API/application configuration and the pure genre-grouping utility.
+- `src/__tests__/` contains the app-shell and genre-grouping Vitest tests.
