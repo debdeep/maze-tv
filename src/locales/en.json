@@ -15,8 +15,8 @@
     "searchBar": {
         "placeholderText": "Search By Name..."
     },
-    "topRestaurantSwitcher": {
-        "label": "Display Top Restaurants"
+    "topShowsSwitcher": {
+        "label": "Display Top Shows"
     },
     "pagination": {
         "navigationLabel": "Show list pagination",

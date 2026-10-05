@@ -9,46 +9,47 @@
         "history": "Geschiedenis"
     },
     "historyPage": {
-        "header": "Bezochte pagina's"
+        "header": "Bezochte pagina's",
+        "noVisitedRoutes": "Geen bezochte sitelinks"
     },
     "searchBar": {
         "placeholderText": "Zoeken op naam..."
     },
-    "topRestaurantSwitcher": {
-        "label": "Toon toprestaurants"
+    "topShowsSwitcher": {
+        "label": "Toon topshows"
     },
     "pagination": {
-        "navigationLabel": "Paginering van shows",
+        "navigationLabel": "Paginering van showlijst",
         "previous": "Vorige",
         "page": "Pagina {page}",
         "next": "Volgende"
     },
     "showsList": {
-        "loading": "Series laden...",
+        "loading": "Shows laden...",
         "loadingPage": "Pagina {page} laden...",
-        "loadError": "Kan series niet laden. Controleer je verbinding en probeer het opnieuw.",
+        "loadError": "Kan shows niet laden. Controleer je verbinding en probeer het opnieuw.",
         "retry": "Opnieuw proberen",
-        "noResults": "Geen series gevonden.",
+        "noResults": "Geen shows gevonden.",
         "otherGenre": "Overig"
     },
     "showDetail": {
-        "backToShows": "Terug naar series",
-        "loading": "Serie laden...",
-        "loadError": "Kan deze serie niet laden. Controleer je verbinding en probeer het opnieuw.",
+        "backToShows": "Terug naar shows",
+        "loading": "Show laden...",
+        "loadError": "Kan deze show niet laden. Controleer je verbinding en probeer het opnieuw.",
         "retry": "Opnieuw proberen",
-        "posterAlt": "Poster van {name}",
+        "posterAlt": "{name} poster",
         "noImage": "Geen afbeelding beschikbaar",
         "rating": "Beoordeling",
         "runtime": "Speelduur",
         "runtimeValue": "{minutes} min",
-        "premiered": "Premièredatum",
-        "ended": "Einddatum",
+        "premiered": "Gepremierd",
+        "ended": "Afgelopen",
         "schedule": "Uitzendschema",
         "scheduleDaysTime": "{days} om {time}",
         "scheduleDays": "{days}",
         "scheduleTime": "{time}",
-        "network": "Omroep",
-        "officialSite": "Bezoek officiële website",
-        "about": "Over deze serie"
+        "network": "Zender",
+        "officialSite": "Bezoek officiële site",
+        "about": "Over"
     }
 }

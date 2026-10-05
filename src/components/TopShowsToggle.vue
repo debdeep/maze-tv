@@ -9,7 +9,7 @@ defineEmits(['toggle']);
                 <input type="checkbox" id="toggleInput" @change="$emit('toggle', $event.target.checked)">
                 <span class="slider" aria-hidden="true"></span>
             </span>
-            <span class="toggle-label">{{ $t('topRestaurantSwitcher.label') }}</span>
+            <span class="toggle-label">{{ $t('topShowsSwitcher.label') }}</span>
         </label>
     </div>
 </template>

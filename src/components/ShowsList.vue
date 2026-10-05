@@ -6,11 +6,11 @@ import { groupShowsByGenre } from '../utils/groupShowsByGenre.js';
 import ShowCard from './ShowCard.vue';
 import SearchBar from './SearchBar.vue';
 import Pagination from './Pagination.vue';
-import TopRestaurantsToggle from './TopRestaurantsToggle.vue';
+import TopShowsToggle from './TopShowsToggle.vue';
 
 const shows = ref([]);
 const searchQuery = ref('');
-const showTopRestaurants = ref(false);
+const showTopShows = ref(false);
 const page = ref(0);
 const hasNextPage = ref(true);
 const loading = ref(false);
@@ -56,7 +56,7 @@ async function getShowList(targetPage = page.value) {
 }
 const filteredShows = computed(() => {
     // filter when switcher is enabled
-    if (showTopRestaurants.value) {
+    if (showTopShows.value) {
         return shows.value.filter(
             show => show?.rating?.average >= AppConfig.showRatingsBenchMark
         );
@@ -72,12 +72,17 @@ const filteredShows = computed(() => {
     // Default show all
     return shows.value;
 });
+
 const genreGroups = computed(() => groupShowsByGenre(filteredShows.value));
+
+//console.log(genreGroups);
+
 const handleSearch = (query) => {
     searchQuery.value = query;
 };
+
 const handleToggle = (isChecked) => {
-    showTopRestaurants.value = isChecked;
+    showTopShows.value = isChecked;
     if (isChecked) {
         searchQuery.value = '';
         searchBar.value?.clear();
@@ -88,7 +93,7 @@ const handleToggle = (isChecked) => {
 
 <template>
     <SearchBar ref="searchBar" @search="handleSearch" />
-    <TopRestaurantsToggle @toggle="handleToggle" />
+    <TopShowsToggle @toggle="handleToggle" />
     <p v-if="loading && shows.length === 0" class="list-message" role="status">
         {{ $t('showsList.loading') }}
     </p>

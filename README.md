@@ -1,10 +1,10 @@
 # Maze TV
 
-Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It provides paginated show listings, search, a rating filter, show details, and an in-session route history.
+Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It provides paginated rating based genere based show listings, search, a rating filter, show details, and an in-session route history.
 
 ## Architecture Decisions
 
-- **Vue 3 and the Composition API:** Single-file components keep the interface split by responsibility. Vue reactivity manages show data, search, filters, pagination, and route history.
+- **Vue 3 and the Composition API:** SFC's keep the interface split by responsibility. Vue reactivity manages show data, search, filters, pagination, and route history.
 - **Vite:** Vite provides the Vue-aware development server with hot-module replacement and bundles the production app. The `@` alias resolves to `src/`.
 - **Vue Router:** Client-side routes separate list, detail, and history views. Route components are lazy-loaded so each view can be loaded when needed.
 - **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
@@ -20,7 +20,7 @@ The catalog key `dt` is not a standard language tag. When Dutch is selected, the
 ## Routes and History
 
 - `/` redirects to `/shows`.
-- `/shows` displays the dashboard and show list.
+- `/shows` displays the dashboard and shows list.
 - `/shows/:id` loads details for the TVmaze show with that ID.
 - `/history` lists unique routes visited during the current app session. The history page itself is not added to the list; entries are held in memory and reset when the app reloads.
 
@@ -63,7 +63,7 @@ The show dashboard uses horizontally scrollable genre rails. Cards remain usable
 ## Requirements
 
 - **Node.js:** `^22.18.0 || >=24.12.0`, as declared in `package.json`. This allows Node.js 22.18.x or newer in the 22.x line, or Node.js 24.12.0 and later.
-- **npm:** The repository does not pin an npm version. Use npm 9 or newer, which supports the version 3 lockfile in `package-lock.json`. npm is normally installed with Node.js.
+- **npm:** The repository does not pin an npm version. Use npm 9 or newer, which supports the lockfile in `package-lock.json`. npm is normally installed with Node.js.
 
 Check your local versions with:
 

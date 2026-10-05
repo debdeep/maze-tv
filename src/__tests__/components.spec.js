@@ -12,7 +12,7 @@ import Pagination from '../components/Pagination.vue';
 import SearchBar from '../components/SearchBar.vue';
 import ShowCard from '../components/ShowCard.vue';
 import ShowsList from '../components/ShowsList.vue';
-import TopRestaurantsToggle from '../components/TopRestaurantsToggle.vue';
+import TopShowsToggle from '../components/TopShowsToggle.vue';
 
 const RouterLinkStub = defineComponent({
     props: {
@@ -122,9 +122,9 @@ describe('SearchBar', () => {
     });
 });
 
-describe('TopRestaurantsToggle', () => {
+describe('TopShowsToggle', () => {
     it('emits the checkbox state when changed', async () => {
-        const wrapper = mountLocalized(TopRestaurantsToggle);
+        const wrapper = mountLocalized(TopShowsToggle);
 
         await wrapper.get('input[type="checkbox"]').setValue(true);
 
