@@ -5,7 +5,9 @@ import { i18n } from '../locales/index.js';
 import { visitedRoutes } from '../router/index.js';
 import Dashboard from '../views/Dashboard.vue';
 import History from '../views/History.vue';
+import NotFound from '../views/NotFound.vue';
 import ShowDetail from '../views/ShowDetail.vue';
+import router from '../router/index.js';
 
 const RouterLinkStub = { template: '<a><slot /></a>' };
 const wrappers = [];
@@ -72,6 +74,25 @@ describe('History view', () => {
 
         expect(wrapper.find('h1').text()).toBe('Visited Pages');
         expect(wrapper.text()).toContain('No visited site links');
+    });
+});
+
+describe('NotFound view', () => {
+    it('renders a localized 404 message and a link back to shows', () => {
+        const wrapper = track(mount(NotFound, {
+            global: {
+                plugins: [i18n],
+                stubs: { RouterLink: RouterLinkStub },
+            },
+        }));
+
+        expect(wrapper.text()).toContain('404');
+        expect(wrapper.text()).toContain('Page not found');
+        expect(wrapper.text()).toContain('Back to shows');
+    });
+
+    it('matches unknown paths with the catch-all route', () => {
+        expect(router.resolve('/does-not-exist').name).toBe('not-found');
     });
 });
 

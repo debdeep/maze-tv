@@ -23,6 +23,7 @@ The catalog key `dt` is not a standard language tag. When Dutch is selected, the
 - `/shows` displays the dashboard and shows list.
 - `/shows/:id` loads details for the TVmaze show with that ID.
 - `/history` lists unique routes visited during the current app session. The history page itself is not added to the list; entries are held in memory and reset when the app reloads.
+- Unknown paths match the catch-all route and display a localized 404 page with a link back to `/shows`.
 
 Show cards use router links to open the corresponding dynamic detail route. The detail page fetches the record by ID and presents available metadata, including the poster, genres, rating, runtime, schedule, and synopsis.
 
@@ -111,7 +112,7 @@ npm run preview
 ## Project Layout
 
 - `src/components/` contains reusable interface components, including show cards, search, filters, pagination, and route history.
-- `src/views/` contains the dashboard, history, and dynamic show-detail pages.
+- `src/views/` contains the dashboard, history, dynamic show-detail, and not-found pages.
 - `src/router/` defines client-side routes and in-session route tracking.
 - `src/locales/` contains translation catalogs and Vue I18n setup.
 - `src/utils/` contains API/application configuration and the pure genre-grouping utility.

@@ -51,5 +51,10 @@
         "network": "Network",
         "officialSite": "Visit official site",
         "about": "About"
+    },
+    "notFound": {
+        "title": "Page not found",
+        "message": "The page you requested does not exist or may have moved.",
+        "backToShows": "Back to shows"
     }
 }

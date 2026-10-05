@@ -51,5 +51,10 @@
         "network": "Zender",
         "officialSite": "Bezoek officiële site",
         "about": "Over"
+    },
+    "notFound": {
+        "title": "Pagina niet gevonden",
+        "message": "De opgevraagde pagina bestaat niet of is verplaatst.",
+        "backToShows": "Terug naar shows"
     }
 }
