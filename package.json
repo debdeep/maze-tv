@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
+    "test:coverage": "vitest run --coverage",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "@vitest/coverage-v8": "^4.1.11",
     "@vue/test-utils": "^2.5.0",
     "jsdom": "^30.0.1",
     "typescript": "^5.9.3",
