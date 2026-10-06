@@ -1,16 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
+import type { Show } from '../types/show';
 
-const props = defineProps({
-    show: {
-        type: Object,
-        required: true,
-        default: () => ({})
-    }
-});
-const show = props.show;
-const genres = computed(() => show.genres?.join(' · ') || "");
-const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
+interface ShowCardProps {
+    show: Show;
+}
+
+const props = defineProps<ShowCardProps>();
+const show = computed(() => props.show);
+const genres = computed(() => show.value.genres?.join(' · ') || '');
+const premieredYear = computed(() => show.value.premiered?.slice(0, 4) || '');
 </script>
 
 <template>
@@ -54,18 +53,19 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
     min-width: 0;
     flex: 1 1 280px;
     padding: 1rem;
-    background-color: #fff;
-    border: 1px solid #d9e6df;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgb(35 70 52 / 6%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbf9 100%);
+    border: 1px solid #dfece6;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgb(19 59 49 / 7%);
     color: inherit;
     overflow-wrap: anywhere;
     text-decoration: none;
-    transition: box-shadow 160ms ease, transform 160ms ease;
+    transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
 }
 
 .show-card:hover {
-    box-shadow: 0 5px 14px rgb(35 70 52 / 12%);
+    border-color: #bfe0d4;
+    box-shadow: 0 12px 26px rgb(19 59 49 / 12%);
     transform: translateY(-2px);
 }
 
@@ -76,54 +76,71 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
 
 .show-card__main {
     display: grid;
-    grid-template-columns: 88px minmax(0, 1fr);
-    gap: 1rem;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 0.9rem;
     align-items: start;
 }
 
 .show-card__poster,
 .show-card__poster-fallback {
     display: block;
-    width: 88px;
+    width: 92px;
     aspect-ratio: 2 / 3;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgb(18 61 54 / 10%);
 }
 
 .show-card__poster-fallback {
     display: grid;
     place-items: center;
-    padding: 0.5rem;
+    padding: 0.6rem;
     color: #53675c;
-    background-color: #e8f0eb;
-    font-size: 0.8rem;
+    background: linear-gradient(180deg, #edf6f1 0%, #e4efe9 100%);
+    font-size: 0.74rem;
     text-align: center;
+}
+
+.show-card__details {
+    min-width: 0;
 }
 
 .show-card__status,
 .show-card__facts {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem 0.65rem;
+    gap: 0.35rem 0.6rem;
     color: #53675c;
-    font-size: 0.8rem;
+    font-size: 0.76rem;
+    line-height: 1.4;
 }
 
 .show-card__status {
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.5rem;
     text-transform: capitalize;
 }
 
+.show-card__status span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.18rem 0.45rem;
+    border-radius: 999px;
+    background: #edf6f1;
+    color: #285a4e;
+    font-weight: 600;
+}
+
 .show-card h2 {
-    margin: 0 0 0.4rem;
-    font-size: 1.2rem;
-    line-height: 1.25;
+    margin: 0 0 0.45rem;
+    font-size: 1.18rem;
+    line-height: 1.3;
+    color: #173c35;
 }
 
 .show-card__genres {
-    margin: 0 0 0.65rem;
-    color: #354c3f;
-    font-size: 0.875rem;
+    margin: 0 0 0.7rem;
+    color: #385a4d;
+    font-size: 0.84rem;
     line-height: 1.4;
 }
 
@@ -132,17 +149,17 @@ const premieredYear = computed(() => show.premiered?.slice(0, 4) || "");
 }
 
 .show-card__rating {
-    color: #805c16;
-    font-weight: 700;
+    color: #8a6512;
+    font-weight: 800;
 }
 
 .show-card__summary {
     display: -webkit-box;
-    margin-top: 0.85rem;
+    margin-top: 0.9rem;
     overflow: hidden;
-    color: #35443b;
+    color: #3a5047;
     font-size: 0.9rem;
-    line-height: 1.5;
+    line-height: 1.55;
     line-clamp: 4;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;

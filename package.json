@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "pinia": "^4.0.3",
     "vue": "^3.5.42",
     "vue-i18n": "^11.4.12",
     "vue-router": "^5.3.1"
@@ -18,9 +20,11 @@
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/test-utils": "^2.5.0",
     "jsdom": "^30.0.1",
+    "typescript": "^5.9.3",
     "vite": "^8.2.2",
     "vite-plugin-vue-devtools": "^8.2.1",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.12"
   },
   "engines": {
     "node": "^22.18.0 || >=24.12.0"

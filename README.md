@@ -1,15 +1,17 @@
 # Maze TV
 
-Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It provides paginated rating based genere based show listings, search, a rating filter, show details, and an in-session route history.
+Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze API](https://api.tvmaze.com/). It provides genre based, paginated, rated, show listings, and a search, a rating filter, show details, and an in-session route history.
 
 ## Architecture Decisions
 
-- **Vue 3 and the Composition API:** SFC's keep the interface split by responsibility. Vue reactivity manages show data, search, filters, pagination, and route history.
+- **Vue 3 and the Composition API:** SFCs keep the interface split by responsibility. Vue reactivity manages show data, search, filters, pagination, and route history.
+- **Pinia:** The app uses a dedicated Pinia store for the show list state, including pagination, filtering, and grouped genre output. This keeps the main app shell and page views simpler while centralizing list logic.
 - **Vite:** Vite provides the Vue-aware development server with hot-module replacement and bundles the production app. The `@` alias resolves to `src/`.
-- **Vue Router:** Client-side routes separate list, detail, and history views. Route components are lazy-loaded so each view can be loaded when needed.
+- **Vue Router:** Client-side routes separate list, detail, history, and 404 views. Route tracking is recorded in memory during the active session.
+- **TypeScript:** TypeScript and `vue-tsc` provide strict type-checking for Vue single-file components and TypeScript files. The project supports existing JavaScript files while progressively adding stronger typing.
 - **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
 - **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
-- **Vitest and Vue Test Utils:** Unit tests run in jsdom. Tests cover the shared app shell and the pure genre-grouping utility, including rating order and shows without genres.
+- **Vitest and Vue Test Utils:** Unit tests run in jsdom and cover the UI shell, navigation, store behavior, filtering, and the genre-grouping utility.
 
 ## Language Switching
 
@@ -31,7 +33,7 @@ Show cards use router links to open the corresponding dynamic detail route. The 
 
 The first show request uses TVmaze's zero-based endpoint, `https://api.tvmaze.com/shows?page=0`. The separate `Pagination.vue` component presents Previous and Next controls; `ShowsList.vue` owns the current page and requests the selected page. The displayed page number is one-based for readers, while requests remain zero-based. Previous is disabled on page zero. Next remains available for non-empty pages and is disabled when the API indicates there are no further results.
 
-Search and the rating filter run against the shows currently loaded from the API. Changing pages requests a new set of shows and returns focus to the search field after a successful load.
+Search and the top-shows filter run against the currently loaded shows from the API. Changing pages requests a new set of shows and returns focus to the search field after a successful load. The top-rated filter resets the search field to an empty query when enabled, which keeps the result set consistent with the agreed filter behavior.
 
 ## Application Configuration
 
@@ -97,6 +99,12 @@ Run unit tests once:
 npm run test:unit -- --run
 ```
 
+Check TypeScript and Vue component types:
+
+```sh
+npm run type-check
+```
+
 Create a production build:
 
 ```sh
@@ -111,9 +119,11 @@ npm run preview
 
 ## Project Layout
 
-- `src/components/` contains reusable interface components, including show cards, search, filters, pagination, and route history.
+- `src/components/` contains reusable interface components, including the header, navbar, search bar, top-shows toggle, show cards, pagination, and route history list.
 - `src/views/` contains the dashboard, history, dynamic show-detail, and not-found pages.
-- `src/router/` defines client-side routes and in-session route tracking.
+- `src/stores/` contains the Pinia store that owns the current page, loading state, filters, and grouped results.
+- `src/router/` defines client-side routes, in-session route tracking, and the catch-all 404 fallback.
 - `src/locales/` contains translation catalogs and Vue I18n setup.
-- `src/utils/` contains API/application configuration and the pure genre-grouping utility.
-- `src/__tests__/` contains the app-shell and genre-grouping Vitest tests.
+- `src/utils/` contains the API URL builders, application configuration, and the pure genre-grouping utility.
+- `src/constants/` contains central route constants used by the app shell and router.
+- `src/__tests__/` contains the Vitest suite covering routing, search, store logic, pagination, and UI rendering.

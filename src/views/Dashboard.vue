@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ShowsList from '../components/ShowsList.vue';
 </script>
 

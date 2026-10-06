@@ -1,94 +1,47 @@
-<script setup>
-import { ref, onMounted, computed } from 'vue';
-import { Api } from '../utils/ApiConstants.js';
-import { AppConfig } from '../utils/config.js';
-import { groupShowsByGenre } from '../utils/groupShowsByGenre.js';
+<script setup lang="ts">
+import { onMounted, computed, ref } from 'vue';
+import { useShowsStore } from '../stores/shows';
 import ShowCard from './ShowCard.vue';
 import SearchBar from './SearchBar.vue';
 import Pagination from './Pagination.vue';
 import TopShowsToggle from './TopShowsToggle.vue';
 
-const shows = ref([]);
-const searchQuery = ref('');
-const showTopShows = ref(false);
-const page = ref(0);
-const hasNextPage = ref(true);
-const loading = ref(false);
-const loadingPage = ref(null);
-const loadError = ref(false);
-const searchBar = ref(null);
+const showsStore = useShowsStore();
+const searchBar = ref<{ focus: () => void; clear: () => void } | null>(null);
+
+const shows = computed(() => showsStore.items);
+const page = computed(() => showsStore.page);
+const hasNextPage = computed(() => showsStore.hasNextPage);
+const loading = computed(() => showsStore.loading);
+const loadingPage = computed(() => showsStore.loadingPage);
+const loadError = computed(() => showsStore.error);
+const filteredShows = computed(() => showsStore.filteredShows);
+const genreGroups = computed(() => showsStore.genreGroups);
 
 onMounted(async () => {
-    await getShowList(0);
-})
-
-async function getShowList(targetPage = page.value) {
-    if (loading.value) return;
-
-    const shouldFocusSearch = targetPage !== page.value;
-    loading.value = true;
-    loadingPage.value = targetPage;
-    loadError.value = false;
-
-    try {
-        const response = await fetch(Api.showList(targetPage));
-        if (response.status === 404 && targetPage > 0) {
-            hasNextPage.value = false;
-            return;
-        }
-        if (!response.ok) {
-            throw new Error('Show list request failed');
-        }
-
-        const data = await response.json();
-        shows.value = data;
-        page.value = targetPage;
-        hasNextPage.value = data.length > 0;
-        if (shouldFocusSearch) {
-            searchBar.value?.focus();
-        }
-    } catch {
-        loadError.value = true;
-    } finally {
-        loading.value = false;
-        loadingPage.value = null;
-    }
-}
-const filteredShows = computed(() => {
-    // filter when switcher is enabled
-    if (showTopShows.value) {
-        return shows.value.filter(
-            show => show?.rating?.average >= AppConfig.showRatingsBenchMark
-        );
-    }
-
-    // filter by search query
-    if (searchQuery.value && searchQuery.value.length > AppConfig.searchMinLength) {
-        return shows.value.filter(show =>
-            show.name?.toLowerCase().includes(searchQuery.value.toLowerCase())
-        );
-    }
-
-    // Default show all
-    return shows.value;
+    await showsStore.fetchPage(0);
 });
 
-const genreGroups = computed(() => groupShowsByGenre(filteredShows.value));
+async function getShowList(targetPage: number = page.value): Promise<void> {
+    const shouldFocusSearch = targetPage !== page.value;
 
-//console.log(genreGroups);
+    await showsStore.fetchPage(targetPage);
 
-const handleSearch = (query) => {
-    searchQuery.value = query;
+    if (shouldFocusSearch) {
+        searchBar.value?.focus();
+    }
+}
+
+const handleSearch = (query: string): void => {
+    showsStore.setSearch(query);
 };
 
-const handleToggle = (isChecked) => {
-    showTopShows.value = isChecked;
+const handleToggle = (isChecked: boolean): void => {
+    showsStore.toggleTopShows(isChecked);
     if (isChecked) {
-        searchQuery.value = '';
         searchBar.value?.clear();
     }
 };
-
 </script>
 
 <template>
@@ -102,7 +55,7 @@ const handleToggle = (isChecked) => {
         <button type="button" @click="getShowList(page)">{{ $t('showsList.retry') }}</button>
     </p>
     <p v-if="loading && shows.length > 0" class="list-message" role="status">
-        {{ $t('showsList.loadingPage', { page: loadingPage + 1 }) }}
+        {{ $t('showsList.loadingPage', { page: (loadingPage ?? 0) + 1 }) }}
     </p>
     <div v-if="genreGroups.length > 0" class="genre-groups">
         <section v-for="group in genreGroups" :key="group.genre ?? 'other'" class="genre-group">

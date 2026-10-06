@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import { defineComponent, h, nextTick } from 'vue';
 import { i18n } from '../locales/index.js';
 import { AppConfig } from '../utils/config.js';
@@ -32,7 +33,7 @@ function mountLocalized(component, options = {}) {
     const wrapper = mount(component, {
         ...options,
         global: {
-            plugins: [i18n],
+            plugins: [i18n, createPinia()],
             stubs: { RouterLink: RouterLinkStub },
             ...options.global,
         },
@@ -42,6 +43,7 @@ function mountLocalized(component, options = {}) {
 }
 
 beforeEach(() => {
+    setActivePinia(createPinia());
     i18n.global.locale.value = 'en';
     document.documentElement.lang = 'en';
     visitedRoutes.splice(0);
@@ -73,7 +75,8 @@ describe('Header, navigation, and footer', () => {
         const nav = mountLocalized(NavBar);
         const footer = mountLocalized(Footer);
 
-        expect(nav.findAll('a').map(link => link.text())).toEqual(['Dashboard |', 'History']);
+        expect(nav.findAll('a').map(link => link.text())).toEqual(['Dashboard', 'History']);
+        expect(nav.text()).toContain('|');
         expect(footer.text()).toContain('all rights reserved');
     });
 });
@@ -236,4 +239,5 @@ describe('ShowsList', () => {
         expect(wrapper.get('#search-input').element.value).toBe('');
         expect(wrapper.findAll('.show-card h2').map(title => title.text())).toEqual(['Top Rated']);
     });
+
 });

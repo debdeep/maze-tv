@@ -1,12 +1,17 @@
-<script setup>
-defineEmits(['toggle']);
+<script setup lang="ts">
+const emit = defineEmits<{ (e: 'toggle', checked: boolean): void }>();
+
+function handleToggle(event: Event): void {
+    const target = event.target as HTMLInputElement | null;
+    emit('toggle', target?.checked ?? false);
+}
 </script>
 
 <template>
     <div class="toggle-container">
         <label class="toggle-switch">
             <span class="switch-control">
-                <input type="checkbox" id="toggleInput" @change="$emit('toggle', $event.target.checked)">
+                <input type="checkbox" id="toggleInput" @change="handleToggle">
                 <span class="slider" aria-hidden="true"></span>
             </span>
             <span class="toggle-label">{{ $t('topShowsSwitcher.label') }}</span>

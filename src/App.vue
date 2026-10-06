@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 </script>
@@ -17,8 +17,11 @@ import Footer from './components/Footer.vue';
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top, rgba(176, 222, 205, 0.42), transparent 28%),
+    linear-gradient(180deg, #f5faf7 0%, #edf6f1 100%);
 }
 
 .container-body {
@@ -26,10 +29,13 @@ import Footer from './components/Footer.vue';
   min-height: 0;
   overflow-y: auto;
   padding: 1rem;
-  background-color: #f1f7f4;
+  background: transparent;
 }
 
 :global(body) {
   margin: 0;
+  background: #edf6f1;
+  color: #173c35;
+  font-family: Inter, 'Segoe UI', sans-serif;
 }
 </style>

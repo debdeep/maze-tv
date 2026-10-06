@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import NavBar from './NavBar.vue';
@@ -12,49 +12,66 @@ watch(locale, (currentLocale) => {
 
 <template>
     <header class="header-container">
-        <h1>{{ $t("headerLabel") }}</h1>
+        <div class="header-top">
+            <div class="header-spacer" aria-hidden="true"></div>
+            <h1>{{ $t("headerLabel") }}</h1>
+            <label class="language-switcher">
+                <span>{{ $t('languageSwitcher.label') }}</span>
+                <select v-model="locale">
+                    <option value="en">English</option>
+                    <option value="dt">Dutch</option>
+                </select>
+            </label>
+        </div>
         <NavBar />
-        <label class="language-switcher">
-            <span>{{ $t('languageSwitcher.label') }}</span>
-            <select v-model="locale">
-                <option value="en">English</option>
-                <option value="dt">Dutch</option>
-            </select>
-        </label>
     </header>
 </template>
 <style scoped>
 .header-container {
-    background-color: #174a43;
-    color: #ffffff;
-    padding: 1rem;
-    text-align: center;
+    background: linear-gradient(135deg, #123d36 0%, #1d5d52 100%);
+    color: #f3faf6;
+    padding: 0.65rem 1rem 0.45rem;
+    box-shadow: 0 8px 20px rgb(18 61 54 / 10%);
+}
+
+.header-top {
+    display: grid;
+    grid-template-columns: minmax(110px, 1fr) auto minmax(110px, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.8rem;
+}
+
+.header-spacer {
+    min-height: 1px;
 }
 
 .header-container h1 {
-    margin: 0 0 0.75rem;
-    font-size: 1.75rem;
-    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
 }
 
 .language-switcher {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    width: 100%;
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
+    justify-self: end;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    color: #e7f5ee;
 }
 
 .language-switcher select {
-    min-height: 40px;
-    padding: 0.35rem 0.6rem;
-    border: 1px solid #ffffff;
-    border-radius: 4px;
-    background: #ffffff;
+    min-height: 34px;
+    padding: 0.28rem 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.96);
     color: #173c35;
     font: inherit;
+    box-shadow: inset 0 0 0 1px rgba(18, 61, 54, 0.08);
 }
 
 .language-switcher select:focus-visible {
@@ -64,12 +81,23 @@ watch(locale, (currentLocale) => {
 
 @media (max-width: 600px) {
     .header-container {
-        padding: 0.875rem 1rem;
+        padding: 0.7rem 0.75rem 0.35rem;
+    }
+
+    .header-top {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        min-height: auto;
     }
 
     .header-container h1 {
-        margin-bottom: 0.625rem;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+    }
+
+    .language-switcher {
+        justify-self: center;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
 </style>

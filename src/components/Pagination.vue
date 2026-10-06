@@ -1,26 +1,21 @@
-<script setup>
-const props = defineProps({
-    page: {
-        type: Number,
-        required: true
-    },
-    hasNextPage: {
-        type: Boolean,
-        default: true
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    }
+<script setup lang="ts">
+interface PaginationProps {
+    page: number;
+    hasNextPage?: boolean;
+    loading?: boolean;
+}
+
+const props = withDefaults(defineProps<PaginationProps>(), {
+    hasNextPage: true,
+    loading: false,
 });
 
-const emit = defineEmits(['change']);
+const emit = defineEmits<{ (e: 'change', page: number): void }>();
 
-function changePage(targetPage) {
+function changePage(targetPage: number): void {
     if (targetPage < 0 || props.loading) return;
     emit('change', targetPage);
 }
-
 </script>
 
 <template>
