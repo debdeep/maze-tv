@@ -24,12 +24,12 @@ function detailResponse(show) {
     };
 }
 
-async function mountShowDetail() {
+async function mountShowDetail(path = '/shows/1') {
     const router = createRouter({
         history: createMemoryHistory(),
-        routes: [{ path: '/shows/:id', component: ShowDetail }],
+        routes: [{ path: '/shows/:id?', component: ShowDetail }],
     });
-    await router.push('/shows/1');
+    await router.push(path);
     await router.isReady();
 
     const wrapper = mount(ShowDetail, {
@@ -141,5 +141,67 @@ describe('ShowDetail view', () => {
 
         expect(wrapper.find('h1').text()).toBe('Under the Dome');
         expect(fetch).toHaveBeenCalledTimes(2);
+    });
+
+    it('shows an error without requesting when the route has no ID', async () => {
+        vi.stubGlobal('fetch', vi.fn());
+        const { wrapper } = await mountShowDetail('/shows');
+
+        await flushPromises();
+
+        expect(wrapper.get('[role="alert"]').text()).toContain('Unable to load this show');
+        expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it('shows an error when the API responds unsuccessfully', async () => {
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }));
+        const { wrapper } = await mountShowDetail();
+
+        await flushPromises();
+
+        expect(wrapper.get('[role="alert"]').text()).toContain('Unable to load this show');
+    });
+
+    it('renders time-only and day-only schedules with fallback network details', async () => {
+        const show = {
+            id: 1,
+            name: 'Streaming Show',
+            averageRuntime: 42,
+            schedule: { time: '21:30' },
+            webChannel: { name: 'Stream TV' },
+            image: { medium: 'https://example.com/poster.jpg' },
+        };
+        vi.stubGlobal('fetch', vi.fn()
+            .mockResolvedValueOnce(detailResponse(show))
+            .mockResolvedValueOnce(detailResponse({
+                ...show,
+                id: 2,
+                schedule: { days: ['Friday'] },
+            })));
+        const { router, wrapper } = await mountShowDetail();
+
+        await flushPromises();
+        expect(wrapper.text()).toContain('21:30');
+        expect(wrapper.text()).toContain('Stream TV');
+        expect(wrapper.text()).toContain('42');
+        expect(wrapper.find('.show-detail__poster').attributes('src')).toBe('https://example.com/poster.jpg');
+
+        await router.push('/shows/2');
+        await flushPromises();
+        expect(wrapper.text()).toContain('Friday');
+    });
+
+    it('renders the poster fallback when show artwork is missing', async () => {
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(detailResponse({
+            id: 1,
+            name: 'No Artwork',
+            genres: [],
+        })));
+        const { wrapper } = await mountShowDetail();
+
+        await flushPromises();
+
+        expect(wrapper.find('.show-detail__poster-fallback').exists()).toBe(true);
+        expect(wrapper.text()).toContain('No image available');
     });
 });

@@ -29,4 +29,23 @@ describe('groupShowsByGenre', () => {
             { genre: 'Other', shows: [{ id: 1, name: 'No Genre', genres: [] }] },
         ]);
     });
+
+    it('deduplicates genres and sorts equal ratings by name', () => {
+        const groups = groupShowsByGenre([
+            { id: 1, name: 'Zulu', genres: ['Drama', 'Drama'], rating: { average: 8 } },
+            { id: 2, name: 'Alpha', genres: ['Drama'], rating: { average: 8 } },
+        ]);
+
+        expect(groups).toHaveLength(1);
+        expect(groups[0].shows.map(show => show.name)).toEqual(['Alpha', 'Zulu']);
+    });
+
+    it('sorts unrated shows by name when both ratings are missing', () => {
+        const groups = groupShowsByGenre([
+            { id: 1, name: 'Zulu', genres: ['Drama'] },
+            { id: 2, name: 'Alpha', genres: ['Drama'] },
+        ]);
+
+        expect(groups[0].shows.map(show => show.name)).toEqual(['Alpha', 'Zulu']);
+    });
 });

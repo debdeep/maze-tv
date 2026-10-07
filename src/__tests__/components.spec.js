@@ -157,6 +157,26 @@ describe('Pagination', () => {
         expect(previous.attributes('disabled')).toBeDefined();
         expect(next.attributes('disabled')).toBeDefined();
     });
+
+    it('does not emit a page change for negative or loading navigation', async () => {
+        const firstPage = mountLocalized(Pagination, {
+            props: { page: 0, hasNextPage: true },
+        });
+        await firstPage.findAll('button')[0].trigger('click');
+        expect(firstPage.emitted('change')).toBeUndefined();
+
+        const loading = mountLocalized(Pagination, {
+            props: { page: 0, hasNextPage: true, loading: true },
+        });
+        await loading.findAll('button')[1].trigger('click');
+        expect(loading.emitted('change')).toBeUndefined();
+
+        const invalidPage = mountLocalized(Pagination, {
+            props: { page: -1, hasNextPage: true },
+        });
+        await invalidPage.findAll('button')[0].trigger('click');
+        expect(invalidPage.emitted('change')).toBeUndefined();
+    });
 });
 
 describe('ShowCard', () => {
@@ -178,6 +198,34 @@ describe('ShowCard', () => {
         expect(wrapper.text()).toContain('6.6');
         expect(wrapper.text()).toContain('A small town is sealed off.');
         expect(wrapper.text()).toContain('No image available');
+    });
+
+    it('renders optional metadata and a poster while omitting empty facts', () => {
+        const wrapper = mountLocalized(ShowCard, {
+            props: {
+                show: {
+                    id: 2,
+                    name: 'Quiet Season',
+                    status: 'Running',
+                    language: 'English',
+                    genres: [],
+                    rating: { average: 0 },
+                    averageRuntime: 42,
+                    premiered: '2024-03-12',
+                    image: { medium: 'https://example.com/poster.jpg' },
+                },
+            },
+        });
+
+        expect(wrapper.find('img').attributes('src')).toBe('https://example.com/poster.jpg');
+        expect(wrapper.find('img').attributes('alt')).toBe('Quiet Season poster');
+        expect(wrapper.text()).toContain('Running');
+        expect(wrapper.text()).toContain('English');
+        expect(wrapper.text()).toContain('42 min');
+        expect(wrapper.text()).toContain('2024');
+        expect(wrapper.find('.show-card__genres').exists()).toBe(false);
+        expect(wrapper.find('.show-card__rating').exists()).toBe(false);
+        expect(wrapper.find('.show-card__summary').exists()).toBe(false);
     });
 });
 
@@ -238,6 +286,64 @@ describe('ShowsList', () => {
 
         expect(wrapper.get('#search-input').element.value).toBe('');
         expect(wrapper.findAll('.show-card h2').map(title => title.text())).toEqual(['Top Rated']);
+
+        await wrapper.get('input[type="checkbox"]').setValue(false);
+        expect(wrapper.findAll('.show-card h2').map(title => title.text())).toEqual(['Top Rated', 'Low Rated']);
+    });
+
+    it('shows initial loading and the empty-results state', async () => {
+        let resolveRequest;
+        vi.stubGlobal('fetch', vi.fn(() => new Promise(resolve => {
+            resolveRequest = resolve;
+        })));
+        const wrapper = mountLocalized(ShowsList);
+        await nextTick();
+
+        expect(wrapper.get('[role="status"]').text()).toContain('Loading');
+
+        resolveRequest({ ok: true, status: 200, json: async () => [] });
+        await flushPromises();
+
+        expect(wrapper.find('.no-results').exists()).toBe(true);
+        expect(wrapper.find('.genre-groups').exists()).toBe(false);
+    });
+
+    it('shows a request error and retries the current page', async () => {
+        vi.stubGlobal('fetch', vi.fn()
+            .mockRejectedValueOnce(new Error('offline'))
+            .mockResolvedValueOnce({ ok: true, status: 200, json: async () => [] }));
+        const wrapper = mountLocalized(ShowsList);
+
+        await flushPromises();
+        expect(wrapper.get('[role="alert"]').text()).toContain('Unable to load shows');
+
+        await wrapper.get('[role="alert"] button').trigger('click');
+        await flushPromises();
+
+        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(wrapper.find('.no-results').exists()).toBe(true);
+    });
+
+    it('shows the requested page while loading with existing results', async () => {
+        let resolveNextPage;
+        vi.stubGlobal('fetch', vi.fn()
+            .mockResolvedValueOnce({
+                ok: true,
+                status: 200,
+                json: async () => [{ id: 1, name: 'First page show', genres: ['Drama'] }],
+            })
+            .mockImplementationOnce(() => new Promise(resolve => {
+                resolveNextPage = resolve;
+            })));
+        const wrapper = mountLocalized(ShowsList);
+        await flushPromises();
+
+        await wrapper.findAll('.pagination button')[1].trigger('click');
+        await nextTick();
+        expect(wrapper.get('[role="status"]').text()).toContain('2');
+
+        resolveNextPage({ ok: true, status: 200, json: async () => [] });
+        await flushPromises();
     });
 
 });
