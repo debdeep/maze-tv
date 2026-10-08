@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { groupShowsByGenre } from '../utils/groupShowsByGenre.js';
+import { groupShowsByGenre } from '../groupShowsByGenre.js';
 
 describe('groupShowsByGenre', () => {
-    it('groups shows into every genre and sorts each group by rating descending', () => {
+    it('groups shows by each genre and sorts each group by rating descending', () => {
         const shows = [
             { id: 1, name: 'Under the Dome', genres: ['Drama', 'Science-Fiction'], rating: { average: 6.6 } },
             { id: 2, name: 'Top Drama', genres: ['Drama'], rating: { average: 8.8 } },
@@ -20,7 +20,7 @@ describe('groupShowsByGenre', () => {
         expect(groups[1].shows.map(show => show.name)).toEqual(['Under the Dome']);
     });
 
-    it('places shows with no genres in an unclassified group', () => {
+    it('places shows with no genres in the unclassified group', () => {
         const groups = groupShowsByGenre([
             { id: 1, name: 'No Genre', genres: [] },
         ]);
@@ -40,7 +40,7 @@ describe('groupShowsByGenre', () => {
         expect(groups[0].shows.map(show => show.name)).toEqual(['Alpha', 'Zulu']);
     });
 
-    it('sorts unrated shows by name when both ratings are missing', () => {
+    it('sorts shows with missing ratings by name', () => {
         const groups = groupShowsByGenre([
             { id: 1, name: 'Zulu', genres: ['Drama'] },
             { id: 2, name: 'Alpha', genres: ['Drama'] },

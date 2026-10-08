@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
-import { useShowsStore } from '../stores/shows';
+import { createPinia, setActivePinia } from 'pinia';
+import { useShowsStore } from '../shows.js';
 
 describe('shows store', () => {
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe('shows store', () => {
         vi.unstubAllGlobals();
     });
 
-    it('tracks the current filter state and fetch state without leaking to the rest of the app', () => {
+    it('tracks the current filter state without leaking to the rest of the app', () => {
         const store = useShowsStore();
 
         store.setSearch('the office');

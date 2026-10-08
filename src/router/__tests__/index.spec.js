@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import router, { visitedRoutes } from '../router/index.js';
+import router, { visitedRoutes } from '../index.js';
 
 beforeEach(async () => {
     await router.replace('/shows');

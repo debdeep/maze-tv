@@ -11,7 +11,7 @@ Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze 
 - **TypeScript:** TypeScript and `vue-tsc` provide strict type-checking for Vue single-file components and TypeScript files. The project supports existing JavaScript files while progressively adding stronger typing.
 - **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
 - **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
-- **Vitest and Vue Test Utils:** Unit tests run in jsdom and cover the UI shell, navigation, store behavior, filtering, and the genre-grouping utility.
+- **Vitest and Vue Test Utils:** Unit tests run in jsdom. Specs live alongside their source areas and cover individual components and views, i18n, routing, store behavior, and genre grouping.
 
 ## Language Switching
 
@@ -99,6 +99,12 @@ Run unit tests once:
 npm run test:unit -- --run
 ```
 
+Run the unit tests with coverage:
+
+```sh
+npm run test:coverage
+```
+
 Check TypeScript and Vue component types:
 
 ```sh
@@ -120,10 +126,16 @@ npm run preview
 ## Project Layout
 
 - `src/components/` contains reusable interface components, including the header, navbar, search bar, top-shows toggle, show cards, pagination, and route history list.
+- `src/components/__tests__/` contains focused unit tests for each reusable component and shared test utilities.
 - `src/views/` contains the dashboard, history, dynamic show-detail, and not-found pages.
+- `src/views/__tests__/` contains focused unit tests for each page view.
 - `src/stores/` contains the Pinia store that owns the current page, loading state, filters, and grouped results.
+- `src/stores/__tests__/` contains tests for show fetching, filtering, and pagination state.
 - `src/router/` defines client-side routes, in-session route tracking, and the catch-all 404 fallback.
-- `src/locales/` contains translation catalogs and Vue I18n setup.
+- `src/router/__tests__/` contains tests for redirects, route matching, and in-session route tracking.
+- `src/i18n/` contains translation catalogs and Vue I18n setup.
+- `src/i18n/__tests__/` contains tests for the configured locales and translated messages.
 - `src/utils/` contains the API URL builders, application configuration, and the pure genre-grouping utility.
+- `src/utils/__tests__/` contains tests for show grouping by genre and rating.
 - `src/constants/` contains central route constants used by the app shell and router.
-- `src/__tests__/` contains the Vitest suite covering routing, search, store logic, pagination, and UI rendering.
+- `src/__tests__/` contains the app-shell test.
