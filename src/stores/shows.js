@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { Api } from '../utils/ApiConstants.js';
+import { fetchShowsPage } from '../services/tvmaze.js';
 import { AppConfig } from '../utils/config.js';
 import { groupShowsByGenre } from '../utils/groupShowsByGenre.js';
 
@@ -43,18 +43,12 @@ export const useShowsStore = defineStore('shows', () => {
         error.value = false;
 
         try {
-            const response = await fetch(Api.showList(targetPage));
-
-            if (response.status === 404 && targetPage > 0) {
+            const data = await fetchShowsPage(targetPage);
+            if (data === null) {
                 hasNextPage.value = false;
                 return;
             }
 
-            if (!response.ok) {
-                throw new Error('Show list request failed');
-            }
-
-            const data = await response.json();
             items.value = data;
             page.value = targetPage;
             hasNextPage.value = data.length > 0;

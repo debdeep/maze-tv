@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { Api } from '../utils/ApiConstants.js';
+import { fetchShowById } from '../services/tvmaze.js';
 import type { Show } from '../types/show';
 
 const route = useRoute();
@@ -22,11 +22,7 @@ async function loadShow(id?: string | string[]): Promise<void> {
     loading.value = true;
 
     try {
-        const response = await fetch(Api.showById(resolvedId));
-        if (!response.ok) {
-            throw new Error('Show request failed');
-        }
-        show.value = (await response.json()) as Show;
+        show.value = (await fetchShowById(resolvedId)) as Show;
     } catch {
         error.value = true;
     } finally {

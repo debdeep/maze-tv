@@ -10,8 +10,8 @@ Maze TV is a client-side Vue application for browsing TV shows from the [TVmaze 
 - **Vue Router:** Client-side routes separate list, detail, history, and 404 views. Route tracking is recorded in memory during the active session.
 - **TypeScript:** TypeScript and `vue-tsc` provide strict type-checking for Vue single-file components and TypeScript files. The project supports existing JavaScript files while progressively adding stronger typing.
 - **Vue I18n:** UI messages are kept in JSON catalogs. English (`en`) is the default locale; `dt` is the project's Dutch locale key.
-- **TVmaze API:** The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
-- **Vitest and Vue Test Utils:** Unit tests run in jsdom. Specs live alongside their source areas and cover individual components and views, i18n, routing, store behavior, and genre grouping.
+- **TVmaze API:** `src/services/tvmaze.js` handles show-list and show-detail requests using the URL builders in `src/utils/ApiConstants.js`. The browser calls TVmaze directly, so this application does not require a backend. An internet connection is needed for show listings and details.
+- **Vitest and Vue Test Utils:** Unit tests run in jsdom. Specs live alongside their source areas and cover components, views, composables, services, i18n, routing, store behavior, and genre grouping.
 
 ## Language Switching
 
@@ -58,6 +58,12 @@ export const AppConfig = {
 ## API Constants
 
 `src/utils/ApiConstants.js` centralizes the TVmaze URLs. `Api.showList(page)` builds the zero-based paginated show-list URL, and `Api.showById(id)` builds a detail URL with the show ID URL-encoded.
+
+`src/services/tvmaze.js` performs the API requests and parses successful JSON responses. A 404 for a later show-list page returns `null` to signal the end of pagination; other unsuccessful responses throw and are handled by the store or detail view.
+
+## Reusable Vue Logic
+
+`src/composables/useDebouncedCallback.ts` provides the debounced callback used by the search box. It resets the delay when called again, exposes cancellation for clearing the search, and cancels pending work when its Vue scope is disposed. Composables hold reusable Vue behavior; API communication stays in `src/services/`.
 
 ## Responsive and Accessible UI
 
@@ -129,6 +135,8 @@ npm run preview
 - `src/components/__tests__/` contains focused unit tests for each reusable component and shared test utilities.
 - `src/composables/` contains reusable Vue logic, including the debounced callback used by search.
 - `src/composables/__tests__/` contains focused tests for reusable composables.
+- `src/services/` contains TVmaze API request and response handling.
+- `src/services/__tests__/` contains tests for API URLs, successful responses, and failures.
 - `src/views/` contains the dashboard, history, dynamic show-detail, and not-found pages.
 - `src/views/__tests__/` contains focused unit tests for each page view.
 - `src/stores/` contains the Pinia store that owns the current page, loading state, filters, and grouped results.
