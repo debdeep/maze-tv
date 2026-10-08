@@ -127,6 +127,8 @@ npm run preview
 
 - `src/components/` contains reusable interface components, including the header, navbar, search bar, top-shows toggle, show cards, pagination, and route history list.
 - `src/components/__tests__/` contains focused unit tests for each reusable component and shared test utilities.
+- `src/composables/` contains reusable Vue logic, including the debounced callback used by search.
+- `src/composables/__tests__/` contains focused tests for reusable composables.
 - `src/views/` contains the dashboard, history, dynamic show-detail, and not-found pages.
 - `src/views/__tests__/` contains focused unit tests for each page view.
 - `src/stores/` contains the Pinia store that owns the current page, loading state, filters, and grouped results.

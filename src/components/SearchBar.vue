@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useDebouncedCallback } from '../composables/useDebouncedCallback';
 import { AppConfig } from '../utils/config.js';
 
 const searchQuery = ref<string>('');
@@ -11,7 +12,7 @@ function focus(): void {
 }
 
 function clear(): void {
-    debouncedOnInput.cancel();
+    cancelSearch();
     searchQuery.value = '';
     emit('search', '');
 }
@@ -20,21 +21,12 @@ defineExpose({ focus, clear });
 
 onMounted(focus);
 
-function debouncedSearch<T extends (...args: unknown[]) => void>(func: T, delay: number) {
-    let timeout: number | undefined;
-    const debounced = (...args: Parameters<T>): void => {
-        window.clearTimeout(timeout);
-        timeout = window.setTimeout(() => func(...args), delay);
-    };
-    debounced.cancel = (): void => window.clearTimeout(timeout);
-    return debounced;
-}
-
 const onInput = (): void => {
     emit('search', searchQuery.value);
 };
 
-const debouncedOnInput = debouncedSearch(onInput, AppConfig.searchDelay);
+const { debounced: debouncedOnInput, cancel: cancelSearch } =
+    useDebouncedCallback(onInput, AppConfig.searchDelay);
 </script>
 
 <template>
